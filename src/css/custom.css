@@ -36,6 +36,7 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
+
 .hero, .hero__title, .navbar {
   font-family: "PublicPixel", sans-serif;
   color: #ffffff;
@@ -43,7 +44,9 @@
 
 .hero__title {
   color: #f7ba14;
-  font-size: 500%;
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  line-height: 1.2;
+  word-break: break-word;
 }
 
 .hero--primary, .navbar {
@@ -69,5 +72,19 @@
 }
 
 .hero--primary a {
-  font-size: 200%;
+  font-size: clamp(1rem, 3vw, 1.75rem);
+}
+
+@media (max-width: 996px) {
+  .hero {
+    padding: 2rem 1rem;
+  }
+
+  .navbar__title {
+    font-size: 0.9rem;
+  }
+
+  .navbar-sidebar {
+    font-family: "PublicPixel", sans-serif;
+  }
 }
