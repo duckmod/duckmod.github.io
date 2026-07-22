@@ -24,7 +24,7 @@ const config: Config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'duckmod', // Usually your GitHub org/user name.
-  projectName: 'duckloader', // Usually your repo name.
+  projectName: 'duckmod.github.io', // Usually your repo name.
 
   onBrokenLinks: 'throw',
 
