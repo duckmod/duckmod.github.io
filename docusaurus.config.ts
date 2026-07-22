@@ -25,6 +25,7 @@ const config: Config = {
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'duckmod', // Usually your GitHub org/user name.
   projectName: 'duckmod.github.io', // Usually your repo name.
+  deploymentBranch: 'gh-pages',
 
   onBrokenLinks: 'throw',
 
