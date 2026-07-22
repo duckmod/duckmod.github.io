@@ -1,47 +1,78 @@
 ---
-sidebar_position: 1
+id: install
+title: Installation Guide
+sidebar_label: Installation
+description: Learn how to set up and install DuckLoader on your system.
 ---
 
-# Tutorial Intro
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-Let's discover **Docusaurus in less than 5 minutes**.
+# Installing DuckLoader
 
-## Getting Started
+Welcome to the **DuckLoader** installation guide.
 
-Get started by **creating a new site**.
+---
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+## 1. Clone the Repository
 
-### What you'll need
-
-- [Node.js](https://nodejs.org/en/download/) version 20.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
-
-## Generate a new site
-
-Generate a new Docusaurus site using the **classic template**.
-
-The classic template will automatically be added to your project after you run the command:
+First, clone the DuckLoader repository using git:
+- You can also just download the [repo](https://github.com/duckmod/duckloader).
 
 ```bash
-npm init docusaurus@latest my-website classic
+git clone https://github.com/duckmod/duckloader.git
 ```
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+---
 
-The command also installs all necessary dependencies you need to run Docusaurus.
+## 2. Relocate the files
 
-## Start your site
+Drag **all contents** from the duckloader folder into the game folder located at:
 
-Run the development server:
+<Tabs>
+  <TabItem value="windows" label="Windows" default>
 
 ```bash
-cd my-website
-npm run start
+C:\Program Files (x86)\Steam\steamapps\common\Project P.I.T.T. Playtest\
 ```
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
+  </TabItem>
+  <TabItem value="macOS" label="MacOS">
 
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
+```bash
+~/Library/Application Support/Steam/steamapps/common/Project P.I.T.T. Playtest/
+```
 
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+  </TabItem>
+  <TabItem value="linux" label="Linux">
+
+```bash
+~/.local/share/Steam/steamapps/common/Project P.I.T.T. Playtest/
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## 3. Testing the loader
+
+To verify that DuckLoader is working correctly, start the game and check one of the following:
+
+* **In-Game Console:** Press <kbd>`</kbd> key (QWERTY) or <kbd>²</kbd> key (AZERTY) to open the developer console.
+* **Log File:** Check the log output for the confirmation message:
+  ```text
+  [DuckLoader] Loaded 1 mod(s)
+  ```
+
+## 4. Installing mods
+
+To install mods, place them in a folder named `mods` inside your main game directory (the same path used in **Step 2**):
+
+```text
+Project P.I.T.T. Playtest/mods/
+```
+
+## Troubleshooting
+
+Need help? Visit the [repo](https://github.com/duckmod/duckloader) to open an issue or start a discussion.
