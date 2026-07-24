@@ -1,8 +1,164 @@
 ---
 id: modding
-title: Modding guide
+title: Getting Started
 sidebar_label: Modding
+sidebar_position: 2
 description: Learn how to make mods for PROJECT P.I.T.T.
 ---
 
-## W.I.P.
+# Modding guide(basics)
+
+This guide covers everything you need to write a mod for **Project P.I.T.T.** using DuckLoader. It assumes you've already [installed DuckLoader](./install) in your game folder.
+
+
+## 1. Creating your first mod
+
+A mod is just a GDScript file that extends `DuckMod`. There are two ways to set one up inside your `mods/` folder:
+
+**Option A — a single file**
+
+```
+mods/
+  my_mod.gd
+  my_mod.json   (optional)
+```
+
+**Option B — a folder**
+
+```
+mods/
+  my_mod/
+    my_mod.gd
+    my_mod.json
+```
+
+A minimal `my_mod.gd` looks like this:
+
+```gdscript
+extends DuckMod
+
+func _mod_ready() -> void:
+    DuckLoader.log_message("[MyMod] Hello, duck!")
+```
+
+That's it — DuckLoader picks it up automatically the next time the game starts.
+
+:::tip
+DuckLoader also supports mods packaged as `.pck` files for distribution. See [Exporting Mod as .pck](./advanced-modding) once you're ready to package your mod — for now, a loose `.gd` file or folder is the easiest way to develop.
+:::
+
+### mod.json reference
+
+`mod.json` is optional — anything you omit falls back to a default. All fields:
+
+| Field         | Type            | Default              | Notes                                                        |
+|---------------|-----------------|----------------------|---------------------------------------------------------------|
+| `id`          | string          | file/folder name     | Must be unique across installed mods                          |
+| `name`        | string          | file/folder name     | Display name                                                   |
+| `version`     | string          | `"unknown"`          |                                                                 |
+| `author`      | string          | `"unknown"`          |                                                                 |
+| `description` | string          | `""`                 |                                                                 |
+| `load_after`  | array of ids    | `[]`                 | Load this mod after the listed mods, *if* they're installed    |
+| `load_before` | array of ids    | `[]`                 | Load this mod before the listed mods, *if* they're installed   |
+
+```json
+{
+  "id": "my_mod",
+  "name": "My Mod",
+  "version": "1.0.0",
+  "author": "you",
+  "description": "Does duck things.",
+  "load_after": ["some_other_mod"]
+}
+```
+
+`load_after`/`load_before` only affect ordering **between mods that are actually present** — they aren't hard dependencies. If a mod listed there isn't installed, yours still loads normally.
+
+### Disabling a mod
+
+Rename the file or folder with a leading underscore (e.g. `_my_mod` or `_my_mod.gd`). DuckLoader skips anything starting with `_`.
+
+## Mod lifecycle
+
+`DuckMod` gives you five optional callbacks — implement only the ones you need:
+
+| Method                          | Called when                                              |
+|----------------------------------|-----------------------------------------------------------|
+| `_mod_ready()`                   | Once, right after your mod is loaded                       |
+| `_on_game_loaded(success: bool)`| A save file finishes loading (or fails to)                 |
+| `_on_game_close()`               | The game is closing — save mod state here if needed        |
+| `_mod_tick(delta: float)`        | Every physics frame                                         |
+| `_mod_render(delta: float)`      | Every rendered frame                                         |
+
+## Talking to DuckLoader
+
+The `DuckLoader` autoload is available globally and gives you:
+
+```gdscript
+DuckLoader.log_message("text")           # prints to stdout and the in-game console
+DuckLoader.add_command("hi", func(): DuckLoader.log_message("hi!"), "says hi")
+
+DuckLoader.has_mod("some_other_mod")     # bool
+DuckLoader.get_mod("some_other_mod")     # Node, or null
+DuckLoader.get_mod_info("some_other_mod")# Dictionary (the mod.json fields)
+DuckLoader.get_loaded_mod_ids()          # Array[String]
+```
+
+`add_command` registers a command in the in-game debug console (the same one you open with `` ` `` / `²`), so players can trigger things from your mod without you building your own UI.
+
+`get_mod()` lets mods call each other's public methods directly — check `has_mod()` first if your mod has an optional soft dependency on another one.
+
+## Hooking into the game
+
+DuckLoader replaces several of the game's own systems with patched versions that fire signals mods can listen to. Every hookable action follows the same pattern:
+
+- a **`before_X(event)`** signal, fired *before* the action happens
+- an **`X_done`**-style signal, fired *after* it completes
+
+`event` is a small object with:
+
+```gdscript
+event.get_value("key", default)
+event.set_value("key", value)   # change the outcome
+event.cancel()                  # stop the action entirely
+```
+
+**A good example with the use of hooks: doubling all income:**
+
+```gdscript
+extends DuckMod
+
+func _mod_ready() -> void:
+    GameState.before_money_added.connect(_on_before_money_added)
+
+func _on_before_money_added(event) -> void:
+    event.set_value("amount", event.get_value("amount") * 2)
+```
+
+### Available hooks
+
+| Autoload            | Before                        | After                                          |
+|----------------------|-------------------------------|-------------------------------------------------|
+| `GameState`          | `before_money_added`          | `money_added(amount, product_type)`             |
+|                      | `before_bonus_added`          | `bonus_added(amount)`                           |
+|                      | `before_money_spent`          | `money_spent(amount)`                           |
+|                      | `before_purchase`             | `purchase_made(category, key, subkey)`          |
+|                      | `before_product_added`        | `product_added(product_type)`                   |
+| `ComboSystem`        | `before_combo_hit`             | `combo_hit(product_type, item_value, bonus)`    |
+| `GameProgression`    | `before_phase_change`          | `phase_changed_hook(old_phase, new_phase)`      |
+| `WorkbenchSpawning`  | `before_workbench_spawn`       | `workbench_spawned(kind, workbench_type)`       |
+| `SaveManager`        | `before_save`                  | `game_saved(success)`                            |
+|                      | `before_load`                  | `game_loaded(success)`                           |
+| `ObjectPoolManager`  | `before_spawn`                 | `object_spawned(pool_id, node)`                  |
+|                      | `before_recycle`               | `object_recycled(pool_id, node)`                 |
+| `UnlockManager`      | `before_milestone_unlock`      | —                                                 |
+
+`ObjectPoolManager` also exposes `add_spawnable(pool_id, scene_path, initial_count, max_count)` if your mod wants to register a brand-new spawnable object rather than hooking an existing one.
+
+## Getting help
+
+Something not working? Open an issue or discussion on [GitHub](https://github.com/duckmod/duckloader).
+
+:::note
+A settings/config UI for mods is in development and will get its own section here once it ships.
+:::

@@ -1,0 +1,88 @@
+---
+id: packaging_mod
+sidebar_label: Exporting Mod to a .pck
+sidebar_position: 3
+title: Exporting Mod to a .pck
+description: Packaging DuckLoader mods as .pck files.
+---
+
+# Exporting Mod to a .pck
+
+This page covers packaging a mod as a `.pck` file instead of a loose `.gd` file or folder. Reach for this once your mod needs its own assets (scenes, textures, sounds) bundled alongside the code, or you want a single file to distribute.
+
+
+---
+
+## .gd mods vs .pck mods
+
+Before we dive in on how to export a mod as .pck, it would be nice to know why is better(or worse) to use .pck instead of .gd
+
+|                    | `.gd` mods                                              | `.pck` mods                                                        |
+|--------------------|----------------------------------------------------------|----------------------------------------------------------------------|
+| Setup              | Drop a `.gd` file (+ optional `mod.json`) into `mods/`   | Separate Godot project, exported via *Export PCK/Zip*                |
+| Assets             | Script only — no bundled scenes, textures, or audio       | Can bundle scenes, imported textures, models, audio — anything Godot can import |
+| Iteration speed    | Edit the file, restart the game                          | Edit, export from the Godot editor, copy to `mods/`, restart the game |
+| Readability        | Plain text — anyone can open it and see what it does      | Binary — needs an extraction tool to inspect                         |
+| Distribution size  | Tiny                                                       | Bigger, since assets are bundled in                                   |
+| If misconfigured   | Fails loudly — you'll see a script error                  | Fails silently if the internal path doesn't match the pck's filename  |
+| Best for           | Logic-only mods: hooks, console commands, tweaks          | Mods adding new spawnable objects/scenes, custom UI, audio or if you want a singular file to distribute         |
+
+### TL;DR: 
+  - Smaller mods, .gd mods work fine
+  - Bigger mods, .pck suits better
+---
+
+## How DuckLoader loads a .pck
+
+When DuckLoader finds a `*.pck` file in your `mods/` folder, it loads it as a resource pack and then looks **inside** it for your mod's script and metadata at a fixed path, based on the pck's own filename:
+
+```
+res://mod/<pck_name>/<pck_name>.gd
+res://mod/<pck_name>/<pck_name>.json
+```
+
+`<pck_name>` is the filename of your `.pck`, without the extension. So a pck named `my_mod.pck` must contain, internally:
+
+```
+mod/my_mod/my_mod.gd
+mod/my_mod/my_mod.json
+```
+
+:::caution
+On the current versions duckloader doesn't have any logging about miss configured path! 
+Get this path wrong and DuckLoader won't give you a clear error  it'll just fail to find the script and skip your mod silently. Double-check the internal path matches your pck's filename exactly before asking for help.
+:::
+
+---
+
+## 1. Building the pck
+
+1. Create a separate Godot project (or a subfolder you'll export from) with this exact structure:
+
+   ```
+   your-mod-project/
+     mod/
+       my_mod/
+         my_mod.gd
+         my_mod.json
+   ```
+
+2. Write `my_mod.gd` the same way you would for a loose mod — `extends DuckMod`, implement whichever lifecycle callbacks you need.
+
+3. Fill in `my_mod.json` the same [fields as any other mod](./modding#modjson-reference) (`id`, `name`, `version`, `author`, `description`, `load_after`, `load_before`).
+
+4. In the Godot editor: **Project → Export → Export PCK/ZIP**, and export it as `my_mod.pck`. Include any scenes, textures, or audio your mod script references — they'll be bundled into the same pck and addressable via their `res://` paths at runtime.
+
+---
+
+## 2. Installing
+
+Drop the resulting file straight into the game's `mods/` folder:
+
+```
+Project P.I.T.T. Playtest/mods/my_mod.pck
+```
+
+No subfolder needed here — unlike loose mods, the `.pck` itself is the entry DuckLoader scans for.
+
+Everything else — the lifecycle callbacks, the `DuckLoader` singleton API, the game hooks — works exactly the same as in the [main modding guide](./modding).
