@@ -1,0 +1,46 @@
+---
+id: modding
+title: Modding
+sidebar_label: Modding
+sidebar_position: 2
+description: Learn how to make mods for PROJECT P.I.T.T.
+---
+
+# Modding guide
+
+This guide covers everything you need to write a mod for **Project P.I.T.T.** using DuckLoader. It assumes you've already [installed DuckLoader](./install) in your game folder.
+
+---
+
+## 1. Introduction
+
+A mod is just a GDScript file. There are two ways to set one up inside your `mods/` folder:
+
+**Option 1**
+
+A single .gd file, more info [here](modding/gd_files)
+
+**Option 2**
+
+A single .pck file, more info [here](modding/pck_files)
+
+---
+
+## 2. Choosing the file format
+
+**How do i know which format to choose?**
+
+|                    | `.gd` mods                                               | `.pck` mods                                                        |
+|--------------------|----------------------------------------------------------|----------------------------------------------------------------------|
+| Use case           | Logic-only mods: hooks, console commands, tweaks         | Mods adding new assets or overwriting existing ones / if you want a singular file to distribute |
+| Assets             | Script only, no bundled scenes, textures, or audio       | Can bundle scenes, imported textures, models, audio, anything Godot can import |
+| Iteration speed    | Edit the file, restart the game                          | Edit, export from the Godot editor, copy to `mods/`, restart the game |
+| Readability        | Plain text, anyone can open it and see what it does      | Binary, needs an extraction tool to inspect                         |
+
+**Conclusion:** for smaller mods which only contain code, you should probably use a .gd mod, but for bigger mods which add content or change existing content or have multiple scripts, you should use a .pck mod.
+
+---
+
+## 3. Sharing your mod
+
+If you want to share your mods, we recommend for now that you use the [mods forum](https://discord.com/channels/1471157849437765706/1529821254369149028) in the [discord server](https://discord.gg/7cAFYVRKEg)

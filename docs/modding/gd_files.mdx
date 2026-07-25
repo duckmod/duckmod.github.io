@@ -1,0 +1,89 @@
+---
+id: gd_files
+title: GD files
+sidebar_label: GD files
+sidebar_position: 1
+description: Learn how to make mods for PROJECT P.I.T.T.
+---
+
+---
+
+## 1. Ways to package a .gd mod
+
+- A single .gd file in the mods folder **(NOT RECOMMENDED)**
+
+```
+   mods/
+     your_mod.gd <- directly in the mods folder
+     your_mod.json <- optional
+```
+
+- A folder in the mods folder **(RECOMMENDED)**
+
+```
+   mods/
+     your_mod/
+          my_mod/
+            mod.gd <- this should always be called mod.gd
+            mod.json <- this should always be called mod.json
+   ```
+
+---
+
+## 2. Creating your mod.gd file
+
+A minimal `mod.gd` looks like this:
+
+```gdscript
+extends Node
+
+func _mod_ready() -> void:
+    DuckLoader.log_message("[MyMod] Hello, duck!")
+```
+
+For more info on callbacks / methods look at the [api](api)
+
+---
+
+## 3. Creating your mod.json file
+
+`mod.json` is optional (but recommended), anything you omit falls back to a default.
+
+### An example mod.json file
+
+```json
+{
+  "id": "my_mod",
+  "name": "My Mod",
+  "version": "1.0.0",
+  "author": "you",
+  "description": "Does duck things.",
+  "load_after": ["some_other_mod"]
+}
+```
+
+### All fields:
+
+| Field         | Type            | Default              | Notes                                                        |
+|---------------|-----------------|----------------------|---------------------------------------------------------------|
+| `id`          | string          | file/folder name     | Must be unique across installed mods                          |
+| `name`        | string          | file/folder name     | Display name                                                   |
+| `version`     | string          | `"unknown"`          |                                                                 |
+| `author`      | string          | `"unknown"`          |                                                                 |
+| `description` | string          | `""`                 |                                                                 |
+| `load_after`  | array of ids    | `[]`                 | Load this mod after the listed mods, *if* they're installed    |
+| `load_before` | array of ids    | `[]`                 | Load this mod before the listed mods, *if* they're installed   |
+
+`load_after`/`load_before` only affect ordering **between mods that are actually present**, they aren't hard dependencies. If a mod listed there isn't installed, yours still loads normally.
+
+---
+
+## Disabling a mod
+
+Rename the file or folder with a leading underscore (e.g. `_my_mod` or `_my_mod.gd`). DuckLoader skips anything starting with `_`.
+
+---
+
+## Getting help
+
+Something not working? Open an issue or discussion on [GitHub](https://github.com/duckmod/duckloader).

@@ -1,0 +1,27 @@
+---
+id: duckloader
+title: DuckLoader API
+sidebar_label: DuckLoader
+sidebar_position: 1
+description: Documentation of the DuckLoader API
+---
+
+## Functions
+
+| Method | Description | Return Type |
+| :--- | :--- | :--- |
+| `log_message("text")` | Prints text to `stdout` and the in-game console. | `void` |
+| `add_command("hi", func(): print("hi"), "says hi")` | Registers a console command with a callback and description. | `void` |
+| `has_mod("some_other_mod")` | Checks if a specific mod is currently loaded. | `bool` |
+| `get_mod("some_other_mod")` | Retrieves the root node of the target mod. | `Node` \| `null` |
+| `get_mod_info("some_other_mod")` | Fetches the metadata dictionary from the mod's `mod.json`. | `Dictionary` |
+| `get_loaded_mod_ids()` | Retrieves a list of all active mod IDs. | `Array[String]` |
+
+## Example
+
+```gdscript
+extends Node
+
+func _mod_ready() -> void:
+    DuckLoader.log_message("[MyMod] Hello, duck!")
+```

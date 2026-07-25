@@ -1,0 +1,28 @@
+---
+id: api
+title: Mod callbacks
+sidebar_label: api
+sidebar_position: 3
+description: Documentation of the modding API
+---
+
+## THE MODDING API DOCUMENTATION IS WIP
+
+## Callbacks
+
+| Callbacks                         | Called when                                              |
+|----------------------------------|-----------------------------------------------------------|
+| `_mod_ready()`                   | Once, right after your mod is loaded                       |
+| `_on_game_loaded(success: bool)`| A save file finishes loading (or fails to)                 |
+| `_on_game_close()`               | The game is closing — save mod state here if needed        |
+| `_mod_tick(delta: float)`        | Every physics frame                                         |
+| `_mod_render(delta: float)`      | Every rendered frame                                         |
+
+## Example
+
+```gdscript
+extends Node
+
+func _mod_ready() -> void:
+    DuckLoader.log_message("[MyMod] Hello, duck!")
+```
