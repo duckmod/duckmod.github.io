@@ -6,4 +6,89 @@ sidebar_position: 2
 description: Learn how to make mods for PROJECT P.I.T.T.
 ---
 
-W.I.P.
+# 1. Introduction
+
+While .gd is good for simpler code and its faster to ship. Using .pck brings some advantages to the table talked [here](@)
+
+On this guide you will need godot installed, and you also will need to create a new project(this is needed to export to a pck)
+
+# 2. Setup
+
+Similar to the gd files in a folder a pck mod structure is something like this:
+
+```
+   mod/ <- this needs to be exactly called mod.
+     your_mod/
+          your_mod.gd <- this should always be called the name of your parent folder
+          your_mod.json <- this should always be called the name of your parent folder
+```
+
+The reason why this is the needed structure comes down to the way the modloader loads pck folder
+
+If you know a bit about godot, you would know that godot offers a virtual file system(res://) for the games to store their assets, scripts, scenes, etc. 
+
+And godot offers a way for us to load external resources to that res:// root folder. What kind of black magic they do? 
+
+**Copypaste** :) 
+
+So using our example when the loader loads the pck what its doing is this:
+
+Before loading:
+```
+  res://
+    scenes/
+    scripts/
+    ...
+```
+
+After loading:
+```
+  res://
+    ...
+    mod/
+      your_mod/
+          your_mod.gd
+          your_mod.json
+
+```
+
+Yeah, super difficult i know. After this little setup you are good to go. Because duckloader treats gd files and gd files on the pck the same way.
+
+If you made a gd files folder, you just adapt the structure for this and you are mostly done. We just need to **export** it as a pck.
+
+# 3. Exporting
+
+You are almost there, now we just need to export.
+
+The process of exporting is simple, if you didnt make a godot project for the mod yet.
+
+```
+Open godot
+|
+New project(the name is irrevelant) 
+|
+Import the files and folders to it.
+```
+
+And when you done and want to export. This is going to be a bit different for each OS, I will assume you are using windows.
+
+```
+Project(on top left side)
+|
+Export
+|
+Add(This is to create the preset for the export)
+|
+Windows
+|
+Export PCK/Zip
+```
+
+Then choose the location for the pck. The name for now **NEEDS** to be the same as the root on the file structure.
+If the name is mispelled expect undefined behavior.
+
+# Conclusion
+
+Thats it, you successfully made a pck mod ready to distribute. There is no changes on the code.
+
+The pck behaves as game code, so everything you can do on godot, you can do here too.
