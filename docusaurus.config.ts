@@ -37,6 +37,16 @@ const config: Config = {
     locales: ['en'],
   },
 
+  headTags: [
+    {
+      tagName: 'meta',
+      attributes: {
+        name: 'google-site-verification',
+        content: '95ojJEvQbolqtJK1gYee2xHOns4BZEVfnI6yiozkjvY',
+      },
+    },
+  ],
+
   presets: [
     [
       'classic',
