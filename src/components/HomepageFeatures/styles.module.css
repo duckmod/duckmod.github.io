@@ -1,11 +1,42 @@
 .features {
-  display: flex;
-  align-items: center;
-  padding: 2rem 0;
+  padding: 3rem 0;
   width: 100%;
 }
 
-.featureSvg {
-  height: 200px;
-  width: 200px;
+.featureCard {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.featureCard:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.featureImgWrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.featureImg {
+  max-width: 100%;
+  height: auto;
+  max-height: 250px;
+  object-fit: contain;
+}
+
+.featureContent {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .featureCard,
+  .featureCard:nth-child(even) {
+    flex-direction: column;
+    text-align: center;
+  }
 }
