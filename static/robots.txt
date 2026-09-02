@@ -1,0 +1,19 @@
+#   ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  ⠀⢀⣤⡶⠿⠿⠷⣶⣄⠀⠀⠀⠀⠀
+#   ⠀⠀⠀⠀⠀⠀⠀⠀⠀  ⠀⣰⡿⠁⠀⠀⢀⣀⡀⠙⣷⡀⠀⠀⠀
+#   ⠀⠀⠀⡀⠀⠀⠀⠀ ⠀⢠⣿⠁⠀⠀⠀⠘⠿⠃ ⠀⢸⣿⣿⣿⣿
+#   ⠀⣠⡿⠛⢷⣦⡀⠀⠀⠈⣿⡄⠀⠀⠀⠀⠀ ⠀⠀⣸⣿⣿⣿⠟
+#   ⢰⡿⠁⠀⠀⠙⢿⣦⣤⣤⣼⣿⣄⠀⠀⠀⠀⠀⢴⡟⠛⠋⠁⠀
+#   ⣿⠇⠀⠀⠀⠀⠀⠉⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠈⣿⡀⠀⠀⠀
+#   ⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  ⠀⢹⡇⠀⠀⠀
+#   ⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  ⠀⠀⠀⣼⡇⠀⠀⠀
+#   ⠸⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  ⠀⠀⠀⢠⡿⠀⠀⠀⠀
+#   ⠀⠹⣷⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⣀⣰⡿⠁⠀⠀⠀⠀
+#   ⠀⠀⠀⠉⠙⠛⠿⠶⣶⣶⣶⣶⣶⠶⠿⠟⠛⠉⠀⠀⠀⠀⠀⠀
+#
+# Quack! You found the hidden text in robots.txt.
+# Looking for source code or contributions? Check out https://github.com/duckmod/duckloader
+
+User-agent: *
+Allow: /
+
+Sitemap: https://duckmod.github.io/sitemap.xml
